@@ -80,14 +80,17 @@
     })()
 
     function confirmPasswordFunc(){
-        var password = $("#password").val();
-        var confirmPassword = $("#confirmPassword").val();
+        var password = $("#password");
+        var confirmPassword = $("#confirmPassword");
 
-        if(confirmPassword != password){
+        if(confirmPassword.val() != password.val()){
             console.log("Неравно. Тут нужен код");
+            confirmPassword.removeClass("is-valid");
+            confirmPassword.addClass("is-invalid");
         }else{
             console.log("Равно. Тут нужен код");
-            return false;
+            confirmPassword.removeClass("is-invalid");
+            confirmPassword.addClass("is-valid");
         }
     }
 </script>
