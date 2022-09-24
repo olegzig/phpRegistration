@@ -19,35 +19,36 @@
         <div class="container my-2">
             <div class="my-1 position-relative">
                 <label for="login" class="form-label">Логин </label>
-                <input class="form-control" type="text" name="login" id="login" minlength="6" required/>
+                <input class="form-control" type="text" name="login" id="login" minlength="6" required />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректный логин. Минимум 6 символов
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="password" class="form-label">Пароль </label>
-                <input class="form-control" type="password" name="password" id="password" minlength="6" required/>
+                <input class="form-control" type="password" name="password" id="password" minlength="6" required />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректный пароль. Минимум 6 символов
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="confirmPassword" class="form-label">Подтвердите пароль </label>
-                <input class="form-control" type="password" name="confirmPassword" id="confirmPassword" minlength="6" required oninput="confirmPasswordFunc()"/>
+                <input class="form-control" type="password" name="confirmPassword" id="confirmPassword" minlength="6"
+                    required oninput="confirmPasswordFunc()" />
                 <div class="invalid-tooltip">
                     Пароли не совпадают
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="email" class="form-label">Электронная почта </label>
-                <input class="form-control" type="email" name="email" id="email" required/>
+                <input class="form-control" type="email" name="email" id="email" required />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректную электронную почту
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="name" class="form-label">Имя </label>
-                <input class="form-control" type="text" name="name" id="name" minlength="2" required/>
+                <input class="form-control" type="text" name="name" id="name" minlength="2" required />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректное имя. Минимум 2 символа
                 </div>
@@ -57,7 +58,9 @@
         </div>
     </form>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 <script>
     (function () {
         'use strict'
@@ -79,21 +82,37 @@
             })
     })()
 
-    function confirmPasswordFunc(){
+    function confirmPasswordFunc() {
         var password = $("#password");
         var confirmPassword = $("#confirmPassword");
 
-        if(confirmPassword.val() != password.val()){
+        if (confirmPassword.val() != password.val()) {
             console.log("Неравно. Тут нужен код");
             confirmPassword.removeClass("is-valid");
             confirmPassword.addClass("is-invalid");
-        }else{
+        } else {
             console.log("Равно. Тут нужен код");
             confirmPassword.removeClass("is-invalid");
             confirmPassword.addClass("is-valid");
         }
     }
-</script>
 
+    function Verify() {
+        $.ajax({
+            url: 'display.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                login: login,
+                password: password,
+                email: email,
+                name: name
+            },
+            success(data) {
+
+            }
+        });
+    }
+</script>
 
 </html>
