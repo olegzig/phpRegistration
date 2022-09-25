@@ -17,28 +17,23 @@ class User
     //Проверяем логин на уникальность
     function isLoginUnic()
     {
+        $jsdb = new JSONDB('../files/');
 
     }
     //Проверяем емейл на уникальность
     public function isEmailUnic()
     {
+        $jsdb = new JSONDB('../files/');
 
     }
     //Создаём акк
     function create()
     {
-        $buf = array("name" => $this->name, "login" => $this->login, "email" => $this->email, "password" => $this->password);
-        $json = json_encode($buf);
+        //соль = имя
+        $buf = array("name" => $this->name, "login" => $this->login, "email" => $this->email, "password" => md5($this->name.$this->password));
 
         $this->isEmailUnic();
         $this->isLoginUnic();
-
-        // $file = file_get_contents('../files/db.json');
-        // $jsonOld = json_decode($file);
-        // unset($file);
-
-        // $jsonOld = $jsonOld + $json;
-        // file_put_contents('./files/db.json',$jsonOld);
 
         $jsdb = new JSONDB('../files/');
         $jsdb->insert('db.json',$buf);
@@ -90,7 +85,6 @@ class User
                 break;
         }
     }
-
 }
 
 //делаем класс и подлучаем данные с формы
