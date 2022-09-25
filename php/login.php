@@ -1,7 +1,10 @@
 <?php
+use Jajo\JSONDB;
+require_once "../vendor/autoload.php";
+header('Access-Control-Allow-Origin: *');
 class User
 {
-    public $login, $email, $password, $name, $jsonDb;
+    public $login, $email, $password, $name;
 
     function __construct($login, $email, $password, $name)
     {
@@ -30,12 +33,15 @@ class User
         $this->isEmailUnic();
         $this->isLoginUnic();
 
-        $file = file_get_contents('../files/db.json');
-        $jsonOld = json_decode($file,true);
-        unset($file);
+        // $file = file_get_contents('../files/db.json');
+        // $jsonOld = json_decode($file);
+        // unset($file);
 
-        $jsonOld = $jsonOld + $json;
-        file_put_contents('./files/db.json',$jsonOld);
+        // $jsonOld = $jsonOld + $json;
+        // file_put_contents('./files/db.json',$jsonOld);
+
+        $jsdb = new JSONDB('../files/');
+        $jsdb->insert('db.json',$buf);
     }
     //Удаляем (не используется, но надо по ТЗ)
     function delete()
@@ -89,5 +95,5 @@ class User
 
 //делаем класс и подлучаем данные с формы
 $user = new User($_POST['login'], $_POST['email'], $_POST['password'], $_POST['name']);
-
+$user -> create();
 ?>
