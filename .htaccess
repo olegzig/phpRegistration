@@ -1,0 +1,8 @@
+<Files "db.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
+<Files "composer.json">
+    Order Allow,Deny
+    Deny from all
+</Files>
