@@ -105,38 +105,10 @@ class User
     }
     public function saveCookie()
     {
-        $week = new DateTime('+1 week');
-        setcookie("email", $this->email, $week->getTimestamp(), '/',null,true,true);
-        setcookie("password", $this->password, $week->getTimestamp(), '/',null,true,true);
-        setcookie("login", $this->login, $week->getTimestamp(), '/',null,true,true);
-        setcookie("name", $this->name, $week->getTimestamp(), '/',null,true,true);
-    }
-    //json errors
-    function jsonErrors()
-    {
-        switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-                echo 'Ошибок нет';
-                break;
-            case JSON_ERROR_DEPTH:
-                echo 'Достигнута максимальная глубина стека';
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                echo 'Некорректные разряды или несоответствие режимов';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                echo 'Некорректный управляющий символ';
-                break;
-            case JSON_ERROR_SYNTAX:
-                echo 'Синтаксическая ошибка, некорректный JSON';
-                break;
-            case JSON_ERROR_UTF8:
-                echo 'Некорректные символы UTF-8, возможно неверно закодирован';
-                break;
-            default:
-                echo 'Неизвестная ошибка';
-                break;
-        }
+        setcookie("email", $this->email, time() + (86400 * 30), '/', null, true);
+        setcookie("password", $this->password, time() + (86400 * 30), '/', null, true);
+        setcookie("login", $this->login, time() + (86400 * 30), '/', null, true);
+        setcookie("name", $this->name, time() + (86400 * 30), '/', null, true);
     }
 }
 
@@ -145,7 +117,14 @@ $user = new User($_POST['login'], $_POST['email'], $_POST['password'], $_POST['n
 $user->create();
 
 //сессия
+session_start();
 $_SESSION['user'] = [
     "name" => $_POST['name']
 ];
 $user->saveCookie();
+
+//возвращаем
+$response = [
+    "status" => true,
+];
+echo json_encode($response);

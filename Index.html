@@ -122,9 +122,7 @@
         var regexPassword = new RegExp("(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*");
         var regexName = new RegExp("[a-zA-ZА-Яа-я]+$");
 
-        console.log(name.search(regexName))
         if (login.length >= 6 && password.search(regexPassword) !=-1 && email != "" && name.search(regexName) != -1) {
-            console.log("Сейчас будет ajax");
             $.ajax({
                 url: 'php/login.php',
                 type: 'POST',
@@ -138,11 +136,11 @@
                     name: name
                 },
                 success(data) {
-                    console.log("php выполнился");
+                    console.log("!");
                     if (data.status) {
-                        console.log("Тут должен быть код продолжения");
+                        console.log("Должен был перейти");
+                        window.location.href = 'secondPage.php';
                     } else {
-                        console.log("ФИШМАН СТАНЬ МИД2");
                         data.fields.forEach(function (field) {
                             console.log(field);
                             $("#" + field).removeClass("is-valid");
@@ -159,7 +157,6 @@
             });
         }
     }
-    // $("div[name]")
 </script>
 
 </html>
