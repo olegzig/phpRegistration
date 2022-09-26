@@ -113,18 +113,21 @@ class User
 }
 
 //делаем класс и подлучаем данные с формы
-$user = new User($_POST['login'], $_POST['email'], $_POST['password'], $_POST['name']);
-$user->create();
+//проверям пришёл запрос через ajax или нет
+if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+    $user = new User($_POST['login'], $_POST['email'], $_POST['password'], $_POST['name']);
+    $user->create();
 
-//сессия
-session_start();
-$_SESSION['user'] = [
-    "name" => $_POST['name']
-];
-$user->saveCookie();
+    //сессия
+    session_start();
+    $_SESSION['user'] = [
+        "name" => $_POST['name']
+    ];
+    $user->saveCookie();
 
-//возвращаем
-$response = [
-    "status" => true,
-];
-echo json_encode($response);
+    //возвращаем
+    $response = [
+        "status" => true,
+    ];
+    echo json_encode($response);
+}
