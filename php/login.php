@@ -105,10 +105,11 @@ class User
     }
     public function saveCookie()
     {
-        setcookie("email", $this->email);
-        setcookie("password", $this->password);
-        setcookie("login", $this->login);
-        setcookie("name", $this->name);
+        $week = new DateTime('+1 week');
+        setcookie("email", $this->email, $week->getTimestamp(), '/',null,true,true);
+        setcookie("password", $this->password, $week->getTimestamp(), '/',null,true,true);
+        setcookie("login", $this->login, $week->getTimestamp(), '/',null,true,true);
+        setcookie("name", $this->name, $week->getTimestamp(), '/',null,true,true);
     }
     //json errors
     function jsonErrors()
@@ -147,3 +148,4 @@ $user->create();
 $_SESSION['user'] = [
     "name" => $_POST['name']
 ];
+$user->saveCookie();
