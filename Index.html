@@ -26,10 +26,11 @@
             </div>
             <div class="my-1 position-relative">
                 <label for="password" class="form-label">Пароль </label>
-                <input class="form-control" type="password" name="password" id="password" minlength="6" required
+                <input class="form-control" type="password" name="password" id="password" required pattern="(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*"
                     oninput="confirmPasswordFunc()" />
                 <div class="invalid-tooltip">
-                    Пожалуйста, введите корректный пароль. Минимум 6 символов
+                    Пожалуйста, введите корректный пароль. Минимум 6 символов.
+                    Должен содержать хотя бы одну букву в нижнем регистре, в верхнем регистре и одно число.
                 </div>
             </div>
             <div class="my-1 position-relative">
@@ -49,9 +50,9 @@
             </div>
             <div class="my-1 position-relative">
                 <label for="name" class="form-label">Имя </label>
-                <input class="form-control" type="text" name="name" id="name" minlength="2" required />
+                <input class="form-control" type="text" name="name" id="name" minlength="2" required pattern="^[a-zA-ZА-Яа-я]+$"/>
                 <div class="invalid-tooltip">
-                    Пожалуйста, введите корректное имя. Минимум 2 символа
+                    Пожалуйста, введите корректное имя. Минимум 2 символа. Только буквы
                 </div>
             </div>
 
@@ -77,8 +78,7 @@
                         event.preventDefault()
                         event.stopPropagation()
                     }
-                    event.preventDefault()
-
+                    event.preventDefault();
                     form.classList.add('was-validated')
                 }, false)
             })
@@ -95,6 +95,9 @@
             confirmPassword.removeClass("is-invalid");
             confirmPassword.addClass("is-valid");
         }
+        //для валидации другого. Не хочу 2 метода вешать
+        password.removeClass("is-invalid");
+        password.addClass("is-valid");
     }
 
     function changeLogin() {
@@ -115,7 +118,12 @@
         var password = $("#password").val();
         var email = $("#email").val();
         var name = $("#name").val();
-        if (login.length >= 6 && password >= 6 && email != "" && name.length >= 2) {
+        
+        var regexPassword = new RegExp("(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*");
+        var regexName = new RegExp("[a-zA-ZА-Яа-я]+$");
+
+        console.log(name.search(regexName))
+        if (login.length >= 6 && password.search(regexPassword) !=-1 && email != "" && name.search(regexName) != -1) {
             console.log("Сейчас будет ajax");
             $.ajax({
                 url: 'php/login.php',
