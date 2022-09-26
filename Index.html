@@ -19,7 +19,7 @@
         <div class="container my-2">
             <div class="my-1 position-relative">
                 <label for="login" class="form-label">Логин </label>
-                <input class="form-control" type="text" name="login" id="login" minlength="6" required />
+                <input class="form-control" type="text" name="login" id="login" minlength="6" required oninput="changeLogin()"/>
                 <div class="invalid-tooltip" id="loginDiv">
                     Пожалуйста, введите корректный логин. Минимум 6 символов
                 </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="my-1 position-relative">
                 <label for="email" class="form-label">Электронная почта </label>
-                <input class="form-control" type="email" name="email" id="email" required />
+                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()"/>
                 <div class="invalid-tooltip" id="emailDiv">
                     Пожалуйста, введите корректную электронную почту
                 </div>
@@ -97,6 +97,19 @@
         }
     }
 
+    function changeLogin() {
+        var login = $("#login");
+        login.removeClass("is-invalid");
+        login.addClass("is-valid");
+        login.textContent = "Пожалуйста, введите корректный логин. Минимум 6 символов";
+    }
+    function changeEmail() {
+        var login = $("#email");
+        login.removeClass("is-invalid");
+        login.addClass("is-valid");
+        login.textContent = "Пожалуйста, введите корректную электронную почту";
+    }
+
     function MySubmitFunction() {
         let login = $("input[name='login']").val();
         var password = $("#password").val();
@@ -124,8 +137,8 @@
                         console.log("ФИШМАН СТАНЬ МИД2");
                         data.fields.forEach(function (field) {
                             console.log(field);
-                            $("#"+field).removeClass("is-valid");
-                            $("#"+field).addClass("is-invalid");
+                            $("#" + field).removeClass("is-valid");
+                            $("#" + field).addClass("is-invalid");
                             document.getElementById(`${field}Div`).textContent = `Уже занято`;
                         })
 
