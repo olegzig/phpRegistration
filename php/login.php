@@ -89,10 +89,15 @@ class User
     //Удаляем (не используется, но надо по ТЗ)
     function delete()
     {
+        //удалять тоже по логину будем
+        $this->jsdb->delete()->from('db.json')->where(['login' => $this->login])->trigger();
     }
     //Изменяем (не используется, но надо по ТЗ)
     function change()
     {
+        //менять будем по логину
+        $buf = array("name" => $this->name, "login" => $this->login, "email" => $this->email, "password" => $this->passwCrypt());
+        $this->jsdb->update($buf)->from('db.json')->where(['login' => $this->login])->trigger();
     }
     //Получаем инфу (не используется, но надо по ТЗ)
     function read()
