@@ -14,20 +14,21 @@
 </head>
 
 <body>
-
-    <form class="needs-validation" novalidate id="mainForm" onsubmit="MySubmitFunction()">
+    <!-- регистрация -->
+    <form class="needs-validation" novalidate id="registerForm" onsubmit="MySubmitFunction()">
         <div class="container my-2">
             <div class="my-1 position-relative">
                 <label for="login" class="form-label">Логин </label>
-                <input class="form-control" type="text" name="login" id="login" minlength="6" required oninput="changeLogin()"/>
+                <input class="form-control" type="text" name="login" id="login" minlength="6" required
+                    oninput="changeLogin()" />
                 <div class="invalid-tooltip" id="loginDiv">
                     Пожалуйста, введите корректный логин. Минимум 6 символов
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="password" class="form-label">Пароль </label>
-                <input class="form-control" type="password" name="password" id="password" required pattern="(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*"
-                    oninput="confirmPasswordFunc()" />
+                <input class="form-control" type="password" name="password" id="password" required
+                    pattern="(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*" oninput="confirmPasswordFunc()" />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректный пароль. Минимум 6 символов.
                     Должен содержать хотя бы одну букву в нижнем регистре, в верхнем регистре и одно число.
@@ -43,20 +44,42 @@
             </div>
             <div class="my-1 position-relative">
                 <label for="email" class="form-label">Электронная почта </label>
-                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()"/>
+                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()" />
                 <div class="invalid-tooltip" id="emailDiv">
                     Пожалуйста, введите корректную электронную почту
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="name" class="form-label">Имя </label>
-                <input class="form-control" type="text" name="name" id="name" minlength="2" required pattern="^[a-zA-ZА-Яа-я]+$"/>
+                <input class="form-control" type="text" name="name" id="name" minlength="2" required
+                    pattern="^[a-zA-ZА-Яа-я]+$" />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректное имя. Минимум 2 символа. Только буквы
                 </div>
             </div>
 
             <button type="submit" class="btn btn-primary my-2" id="SendButton">Отправить</button>
+        </div>
+    </form>
+    <!-- логин -->
+    <form class="needs-validation" novalidate id="loginForm" onsubmit="MySubmitFunctionL()">
+        <div class="container my-2">
+            <div class="my-1 position-relative">
+                <label for="loginL" class="form-label">Логин </label>
+                <input class="form-control" type="text" name="loginL" id="loginL" minlength="6" required />
+                <div class="invalid-tooltip" id="loginDivL">
+                    Пользователя с данным логином или паролем не существует
+                </div>
+            </div>
+            <div class="my-1 position-relative">
+                <label for="passwordL" class="form-label">Пароль </label>
+                <input class="form-control" type="password" name="passwordL" id="passwordL" minlength="6" required />
+                <div class="invalid-tooltip">
+                    Пользователя с данным логином или паролем не существует
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary my-2" id="SendButtonL">Отправить</button>
         </div>
     </form>
 </body>
@@ -118,11 +141,11 @@
         var password = $("#password").val();
         var email = $("#email").val();
         var name = $("#name").val();
-        
+
         var regexPassword = new RegExp("(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*");
         var regexName = new RegExp("[a-zA-ZА-Яа-я]+$");
 
-        if (login.length >= 6 && password.search(regexPassword) !=-1 && email != "" && name.search(regexName) != -1) {
+        if (login.length >= 6 && password.search(regexPassword) != -1 && email != "" && name.search(regexName) != -1) {
             $.ajax({
                 url: 'php/login.php',
                 type: 'POST',
@@ -133,7 +156,8 @@
                     login: login,
                     password: password,
                     email: email,
-                    name: name
+                    name: name,
+                    purpose: "register"
                 },
                 success(data) {
                     console.log("!");
@@ -156,6 +180,40 @@
                 }
             });
         }
+    }
+    function MySubmitFunctionL() {
+        let login = $("input[name='loginL']").val();
+        var password = $("#passwordL").val();
+        console.log("!");
+        $.ajax({
+            url: 'php/login.php',
+            type: 'POST',
+            dataType: 'json',
+            cors: true,
+            secure: true,
+            data: {
+                login: login,
+                password: password,
+                email: null,
+                name: null,
+                purpose: "login"
+            },
+            success(data) {
+                console.log("!");
+                if (data.status) {
+                    console.log("Должен был перейти");
+                    window.location.href = 'secondPage.php';
+                } else {
+                    $("#passwordL").removeClass("is-valid");
+                    $("#passwordL").addClass("is-invalid");
+                    $("#loginL").removeClass("is-valid");
+                    $("#loginL").addClass("is-invalid");
+                }
+            },
+            error(jqXHR, exception) {
+                console.log(exception + ": " + jqXHR.status + " " + jqXHR.statusText);
+            }
+        });
     }
 </script>
 

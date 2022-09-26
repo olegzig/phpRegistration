@@ -97,11 +97,30 @@ class User
     //Получаем инфу (не используется, но надо по ТЗ)
     function read()
     {
+        //получем из бд значение
+        $usersSaved = $this->jsdb->select('login, password, name')->from('db.json')->get();
+        $varOnce = true;
+        for ($i = 0; $i < count($usersSaved); ++$i) {
+            $userPassword = $usersSaved[$i]["password"];
+            $userLogin = $usersSaved[$i]["login"];
+            if ($userLogin == $this->login &&  $userPassword == $this->passwCrypt()) {
+                $this->name = $usersSaved[$i]["name"];
+                $varOnce = false;
+                break;
+            }
+        }
+        if ($varOnce) {
+            $response = [
+                "status" => false,
+            ];
+            echo json_encode($response);
+            die();
+        }
     }
     //для шифрования пароля. Мб понадобится
     function passwCrypt()
     {
-        return md5($this->name . $this->password);
+        return md5($this->login . $this->password);
     }
     public function saveCookie()
     {
@@ -116,12 +135,17 @@ class User
 //проверям пришёл запрос через ajax или нет
 if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     $user = new User($_POST['login'], $_POST['email'], $_POST['password'], $_POST['name']);
-    $user->create();
+    $purpose = $_POST['purpose'];
+    if ($purpose == "register") {
+        $user->create();
+    } else {
+        $user->read();
+    }
 
     //сессия
     session_start();
     $_SESSION['user'] = [
-        "name" => $_POST['name']
+        "name" => $user->name
     ];
     $user->saveCookie();
 
