@@ -22,8 +22,8 @@ class User
     function isLoginUnic()
     {
         //получем из бд значение
-        $jsdb = new JSONDB('../files/');
-        $loginLIstArray = $jsdb->select("login")->from('db.json')->get();
+
+        $loginLIstArray = $this->jsdb->select("login")->from('db.json')->get();
         $loginLIst = array();
 
         for ($i = 0; $i < count($loginLIstArray); ++$i) {
