@@ -1,6 +1,8 @@
 <?php
 require_once "../vendor/autoload.php";
+
 use Jajo\JSONDB;
+
 header('Access-Control-Allow-Origin: *');
 class User
 {
@@ -24,15 +26,14 @@ class User
         $loginLIstArray = $jsdb->select("login")->from('db.json')->get();
         $loginLIst = array();
 
-        for($i = 0; $i < count($loginLIstArray); ++$i){
-            $loginLIst[]=$loginLIstArray[$i]["login"];
+        for ($i = 0; $i < count($loginLIstArray); ++$i) {
+            $loginLIst[] = $loginLIstArray[$i]["login"];
         }
 
         //если запись есть, вернуть false
         if (in_array($this->login, $loginLIst)) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -43,15 +44,14 @@ class User
         $emailLIstArr = $this->jsdb->select('email')->from('db.json')->get();
         $emailLIst = array();
 
-        for($i = 0; $i < count($emailLIstArr); ++$i){
-            $emailLIst[]=$emailLIstArr[$i]["email"];
+        for ($i = 0; $i < count($emailLIstArr); ++$i) {
+            $emailLIst[] = $emailLIstArr[$i]["email"];
         }
 
         //если запись есть, вернуть false
         if (in_array($this->email, $emailLIst) == true) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -79,7 +79,7 @@ class User
     function create()
     {
         //соль = имя
-        $buf = array("name" => $this->name, "login" => $this->login, "email" => $this->email, "password" => md5($this->name . $this->password));
+        $buf = array("name" => $this->name, "login" => $this->login, "email" => $this->email, "password" => $this->passwCrypt());
 
         $this->isUnic();
 
@@ -89,22 +89,26 @@ class User
     //Удаляем (не используется, но надо по ТЗ)
     function delete()
     {
-
     }
     //Изменяем (не используется, но надо по ТЗ)
     function change()
     {
-
     }
     //Получаем инфу (не используется, но надо по ТЗ)
     function read()
     {
-
     }
     //для шифрования пароля. Мб понадобится
     function passwCrypt()
     {
-
+        return md5($this->name . $this->password);
+    }
+    public function saveCookie()
+    {
+        setcookie("email", $this->email);
+        setcookie("password", $this->password);
+        setcookie("login", $this->login);
+        setcookie("name", $this->name);
     }
     //json errors
     function jsonErrors()
@@ -138,4 +142,8 @@ class User
 //делаем класс и подлучаем данные с формы
 $user = new User($_POST['login'], $_POST['email'], $_POST['password'], $_POST['name']);
 $user->create();
-?>
+
+//сессия
+$_SESSION['user'] = [
+    "name" => $_POST['name']
+];
