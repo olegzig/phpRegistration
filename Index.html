@@ -44,7 +44,8 @@
             </div>
             <div class="my-1 position-relative">
                 <label for="email" class="form-label">Электронная почта </label>
-                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"/>
+                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()"
+                    pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" />
                 <div class="invalid-tooltip" id="emailDiv">
                     Пожалуйста, введите корректную электронную почту
                 </div>
@@ -175,9 +176,7 @@
                             $("#" + field).addClass("is-invalid");
                             document.getElementById(`${field}Div`).textContent = `Уже занято`;
                         })
-
                     }
-
                 },
                 error(jqXHR, exception) {
                     console.log(exception + ": " + jqXHR.status + " " + jqXHR.statusText);
@@ -220,5 +219,4 @@
         });
     }
 </script>
-
 </html>

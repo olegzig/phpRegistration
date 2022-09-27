@@ -1,10 +1,10 @@
 <?php
 session_start();
 require_once "../vendor/autoload.php";
+header('Access-Control-Allow-Origin: *');
+
 
 use Jajo\JSONDB;
-
-header('Access-Control-Allow-Origin: *');
 class User
 {
     public $login, $email, $password, $name;
@@ -149,7 +149,7 @@ if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     }
 
     //сессия
-    
+
     $_SESSION['user'] = [
         "name" => $user->name
     ];
