@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "../vendor/autoload.php";
 
 use Jajo\JSONDB;
@@ -148,7 +149,7 @@ if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
     }
 
     //сессия
-    session_start();
+    
     $_SESSION['user'] = [
         "name" => $user->name
     ];

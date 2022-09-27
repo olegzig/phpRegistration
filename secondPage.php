@@ -1,3 +1,6 @@
+<?php 
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -16,8 +19,6 @@
 <body>
     <h1>
         <?php
-        session_start();
-
         $name = $_SESSION["user"]["name"];
         echo "Hello " . $name;
 
