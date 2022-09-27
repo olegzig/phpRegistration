@@ -44,7 +44,7 @@
             </div>
             <div class="my-1 position-relative">
                 <label for="email" class="form-label">Электронная почта </label>
-                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()" />
+                <input class="form-control" type="email" name="email" id="email" required oninput="changeEmail()" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"/>
                 <div class="invalid-tooltip" id="emailDiv">
                     Пожалуйста, введите корректную электронную почту
                 </div>
@@ -106,7 +106,11 @@
                 }, false)
             })
     })()
-
+    // Validate email
+    function validateEmail(email) {
+        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        return re.test(String(email).toLowerCase());
+    }
     function confirmPasswordFunc() {
         var password = $("#password");
         var confirmPassword = $("#confirmPassword");
@@ -145,7 +149,7 @@
         var regexPassword = new RegExp("(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*");
         var regexName = new RegExp("[a-zA-ZА-Яа-я]+$");
 
-        if (login.length >= 6 && password.search(regexPassword) != -1 && email != "" && name.search(regexName) != -1) {
+        if (login.length >= 6 && password.search(regexPassword) != -1 && validateEmail(email) && name.search(regexName) != -1) {
             $.ajax({
                 url: 'php/login.php',
                 type: 'POST',
