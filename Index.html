@@ -19,8 +19,8 @@
         <div class="container my-2">
             <div class="my-1 position-relative">
                 <label for="login" class="form-label">Логин </label>
-                <input class="form-control" type="text" name="login" id="login" minlength="6" required
-                    oninput="changeLogin()" />
+                <input class="form-control" type="text" name="login" id="login" required oninput="changeLogin()"
+                    pattern="^[a-zA-Zа-яА-Я]{7,}+$" />
                 <div class="invalid-tooltip" id="loginDiv">
                     Пожалуйста, введите корректный логин. Минимум 6 символов
                 </div>
@@ -53,7 +53,7 @@
             <div class="my-1 position-relative">
                 <label for="name" class="form-label">Имя </label>
                 <input class="form-control" type="text" name="name" id="name" minlength="2" required
-                    pattern="^[a-zA-ZА-Яа-я]+$" />
+                    pattern="^[a-zA-Zа-яА-Я]{3,}+$" oninput="changeName()"/>
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректное имя. Минимум 2 символа. Только буквы
                 </div>
@@ -67,14 +67,14 @@
         <div class="container my-2">
             <div class="my-1 position-relative">
                 <label for="loginL" class="form-label">Логин </label>
-                <input class="form-control" type="text" name="loginL" id="loginL" minlength="6" required />
+                <input class="form-control" type="text" name="loginL" id="loginL" required />
                 <div class="invalid-tooltip" id="loginDivL">
                     Пользователя с данным логином или паролем не существует
                 </div>
             </div>
             <div class="my-1 position-relative">
                 <label for="passwordL" class="form-label">Пароль </label>
-                <input class="form-control" type="password" name="passwordL" id="passwordL" minlength="6" required />
+                <input class="form-control" type="password" name="passwordL" id="passwordL" required />
                 <div class="invalid-tooltip">
                     Пользователя с данным логином или паролем не существует
                 </div>
@@ -102,7 +102,6 @@
                         event.preventDefault()
                         event.stopPropagation()
                     }
-                    event.preventDefault();
                     form.classList.add('was-validated')
                 }, false)
             })
@@ -110,11 +109,19 @@
     // Validate email
     function validateEmail(email) {
         var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-        return re.test(String(email).toLowerCase());
+        return re.test(String(email).toLowerCase()) && !email.includes(" ");
     }
     function confirmPasswordFunc() {
         var password = $("#password");
         var confirmPassword = $("#confirmPassword");
+
+        if(password.val().includes(" ")){
+            password.removeClass("is-valid");
+            password.addClass("is-invalid");
+        }else {
+            password.removeClass("is-invalid");
+            password.addClass("is-valid");
+        }
 
         if (confirmPassword.val() != password.val()) {
             confirmPassword.removeClass("is-valid");
@@ -130,15 +137,39 @@
 
     function changeLogin() {
         var login = $("#login");
-        login.removeClass("is-invalid");
-        login.addClass("is-valid");
-        login.textContent = "Пожалуйста, введите корректный логин. Минимум 6 символов";
+        if (!login.val().includes(" ")) {
+            login.removeClass("is-invalid");
+            login.addClass("is-valid");
+            login.textContent = "Пожалуйста, введите корректный логин. Минимум 6 символов";
+        }
+        else{
+            login.removeClass("is-valid");
+            login.addClass("is-invalid");
+        }
     }
     function changeEmail() {
-        var login = $("#email");
-        login.removeClass("is-invalid");
-        login.addClass("is-valid");
-        login.textContent = "Пожалуйста, введите корректную электронную почту";
+        var email = $("#email");
+        if (!email.val().includes(" ")) {
+            email.removeClass("is-invalid");
+            email.addClass("is-valid");
+            email.textContent = "Пожалуйста, введите корректную электронную почту";
+        }
+        else{
+            email.removeClass("is-valid");
+            email.addClass("is-invalid");
+        }
+    }
+    function changeName() {
+        var name = $("#name");
+        if (!name.val().includes(" ")) {
+            name.removeClass("is-invalid");
+            name.addClass("is-valid");
+            name.textContent = "Пожалуйста, введите корректную электронную почту";
+        }
+        else{
+            name.removeClass("is-valid");
+            name.addClass("is-invalid");
+        }
     }
 
     function MySubmitFunction() {
@@ -219,4 +250,5 @@
         });
     }
 </script>
+
 </html>
