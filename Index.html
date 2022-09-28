@@ -123,6 +123,7 @@
         if (password.val().includes(" ")) {
             password.removeClass("is-valid");
             password.addClass("is-invalid");
+            return;
         } else {
             password.removeClass("is-invalid");
             password.addClass("is-valid");
@@ -135,9 +136,6 @@
             confirmPassword.removeClass("is-invalid");
             confirmPassword.addClass("is-valid");
         }
-        //для валидации другого. Не хочу 2 метода вешать
-        password.removeClass("is-invalid");
-        password.addClass("is-valid");
     }
 
     function changeLogin() {
