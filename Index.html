@@ -53,13 +53,13 @@
             <div class="my-1 position-relative">
                 <label for="name" class="form-label">Имя </label>
                 <input class="form-control" type="text" name="name" id="name" minlength="2" required
-                    pattern="^[a-zA-Zа-яА-Я]{2,}$" oninput="changeName()"/>
+                    pattern="^[a-zA-Zа-яА-Я]{2,}$" oninput="changeName()" />
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректное имя. Минимум 2 символа. Только буквы
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary my-2" id="SendButton">Отправить</button>
+            <button type="button" class="btn btn-primary my-2" id="SendButton">Отправить</button>
         </div>
     </form>
     <!-- логин -->
@@ -80,7 +80,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary my-2" id="SendButtonL">Отправить</button>
+            <button type="button" class="btn btn-primary my-2" id="SendButtonL">Отправить</button>
         </div>
     </form>
 </body>
@@ -88,6 +88,10 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
 <script>
+    $(document).ready(function () {
+        $("#SendButton").attr("type","submit");
+        $("#SendButtonL").attr("type","submit");
+    });
     (function () {
         'use strict'
 
@@ -99,8 +103,8 @@
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
                     if (!form.checkValidity()) {
-                        event.preventDefault()
                         event.stopPropagation()
+                        event.preventDefault()
                     }
                     event.preventDefault()//НЕ ТРОЖЬ
                     form.classList.add('was-validated')
@@ -116,10 +120,10 @@
         var password = $("#password");
         var confirmPassword = $("#confirmPassword");
 
-        if(password.val().includes(" ")){
+        if (password.val().includes(" ")) {
             password.removeClass("is-valid");
             password.addClass("is-invalid");
-        }else {
+        } else {
             password.removeClass("is-invalid");
             password.addClass("is-valid");
         }
@@ -143,7 +147,7 @@
             login.addClass("is-valid");
             login.textContent = "Пожалуйста, введите корректный логин. Минимум 6 символов";
         }
-        else{
+        else {
             login.removeClass("is-valid");
             login.addClass("is-invalid");
         }
@@ -155,7 +159,7 @@
             email.addClass("is-valid");
             email.textContent = "Пожалуйста, введите корректную электронную почту";
         }
-        else{
+        else {
             email.removeClass("is-valid");
             email.addClass("is-invalid");
         }
@@ -167,7 +171,7 @@
             name.addClass("is-valid");
             name.textContent = "Пожалуйста, введите корректную электронную почту";
         }
-        else{
+        else {
             name.removeClass("is-valid");
             name.addClass("is-invalid");
         }
