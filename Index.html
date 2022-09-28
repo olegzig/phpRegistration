@@ -20,7 +20,7 @@
             <div class="my-1 position-relative">
                 <label for="login" class="form-label">Логин </label>
                 <input class="form-control" type="text" name="login" id="login" required oninput="changeLogin()"
-                    pattern="^[a-zA-Zа-яА-Я]{7,}+$" />
+                    pattern="^[a-zA-Zа-яА-Я]{6,}$" />
                 <div class="invalid-tooltip" id="loginDiv">
                     Пожалуйста, введите корректный логин. Минимум 6 символов
                 </div>
@@ -53,7 +53,7 @@
             <div class="my-1 position-relative">
                 <label for="name" class="form-label">Имя </label>
                 <input class="form-control" type="text" name="name" id="name" minlength="2" required
-                    pattern="^[a-zA-Zа-яА-Я]{3,}+$" oninput="changeName()"/>
+                    pattern="^[a-zA-Zа-яА-Я]{2,}$" oninput="changeName()"/>
                 <div class="invalid-tooltip">
                     Пожалуйста, введите корректное имя. Минимум 2 символа. Только буквы
                 </div>
@@ -102,6 +102,7 @@
                         event.preventDefault()
                         event.stopPropagation()
                     }
+                    event.preventDefault()//НЕ ТРОЖЬ
                     form.classList.add('was-validated')
                 }, false)
             })
@@ -173,6 +174,7 @@
     }
 
     function MySubmitFunction() {
+        console.log("start");
         let login = $("input[name='login']").val();
         var password = $("#password").val();
         var email = $("#email").val();

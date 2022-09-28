@@ -14,7 +14,7 @@ class User
     {
         $this->name = $name;
         $this->login = $login;
-        $this->email = $email;
+        $this->email = strtolower($email);
         $this->password = $password;
         $this->jsdb = new JSONDB('../files/');
     }
