@@ -111,16 +111,15 @@
                 }, false)
             })
     })()
-    // Validate email
-    function validateEmail(email) {
-        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-        return re.test(String(email).toLowerCase()) && !email.includes(" ");
+    function validatePassword(password){
+        var re = /(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*/;
+        return re.test(String(password)) && !password.includes(" ");
     }
     function confirmPasswordFunc() {
         var password = $("#password");
         var confirmPassword = $("#confirmPassword");
 
-        if (password.val().includes(" ")) {
+        if (!validatePassword(password.val())) {
             password.removeClass("is-valid");
             password.addClass("is-invalid");
             return;
@@ -137,10 +136,14 @@
             confirmPassword.addClass("is-valid");
         }
     }
-
+    //validate login
+    function validateLogin(login){
+        var re = /^[a-zA-Zа-яА-Я]{6,}$/;
+        return re.test(String(login).toLowerCase()) && !login.includes(" ");
+    }
     function changeLogin() {
         var login = $("#login");
-        if (!login.val().includes(" ")) {
+        if (validateLogin(login.val())) {
             login.removeClass("is-invalid");
             login.addClass("is-valid");
             login.textContent = "Пожалуйста, введите корректный логин. Минимум 6 символов";
@@ -150,9 +153,14 @@
             login.addClass("is-invalid");
         }
     }
+    // Validate email
+    function validateEmail(email) {
+        var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+        return re.test(String(email).toLowerCase()) && !email.includes(" ");
+    }
     function changeEmail() {
         var email = $("#email");
-        if (!email.val().includes(" ")) {
+        if (validateEmail(email.val())) {
             email.removeClass("is-invalid");
             email.addClass("is-valid");
             email.textContent = "Пожалуйста, введите корректную электронную почту";
@@ -162,9 +170,14 @@
             email.addClass("is-invalid");
         }
     }
+    //validate name
+    function validateName(name){
+        var re = /^[a-zA-Zа-яА-Я]{2,}$/;
+        return re.test(String(name).toLowerCase()) && !name.includes(" ");
+    }
     function changeName() {
         var name = $("#name");
-        if (!name.val().includes(" ")) {
+        if (validateName(name.val())) {
             name.removeClass("is-invalid");
             name.addClass("is-valid");
             name.textContent = "Пожалуйста, введите корректную электронную почту";
@@ -176,7 +189,6 @@
     }
 
     function MySubmitFunction() {
-        console.log("start");
         let login = $("input[name='login']").val();
         var password = $("#password").val();
         var email = $("#email").val();
@@ -184,8 +196,8 @@
 
         var regexPassword = new RegExp("(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*");
         var regexName = new RegExp("[a-zA-ZА-Яа-я]+$");
-
-        if (login.length >= 6 && password.search(regexPassword) != -1 && validateEmail(email) && name.search(regexName) != -1) {
+        if (validateLogin(login) && validatePassword(password) && validateEmail(email) && validateName(name)) {
+            console.log("valid")
             $.ajax({
                 url: 'php/login.php',
                 type: 'POST',
@@ -222,7 +234,6 @@
     function MySubmitFunctionL() {
         let login = $("input[name='loginL']").val();
         var password = $("#passwordL").val();
-        console.log("!");
         $.ajax({
             url: 'php/login.php',
             type: 'POST',
@@ -237,7 +248,6 @@
                 purpose: "login"
             },
             success(data) {
-                console.log("!");
                 if (data.status) {
                     console.log("Должен был перейти");
                     window.location.href = 'secondPage.php';
